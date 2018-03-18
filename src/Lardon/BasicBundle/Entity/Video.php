@@ -5,12 +5,12 @@ namespace Lardon\BasicBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Image
+ * Video
  *
- * @ORM\Table(name="image")
- * @ORM\Entity(repositoryClass="Lardon\BasicBundle\Repository\ImageRepository")
+ * @ORM\Table(name="video")
+ * @ORM\Entity(repositoryClass="Lardon\BasicBundle\Repository\VideoRepository")
  */
-class Image
+class Video
 {
     /**
      * @var int
@@ -59,29 +59,40 @@ class Image
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="created_at", type="datetime")
+     * @ORM\Column(name="createdAt", type="datetime")
      */
     private $createdAt;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="updated_at", type="datetime")
+     * @ORM\Column(name="updatedAt", type="datetime")
      */
     private $updatedAt;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="deleted_at", type="datetime")
+     * @ORM\Column(name="deletedAt", type="datetime")
      */
     private $deletedAt;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="videos")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     */
+    private $user;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Comment", mappedBy="video")
+     */
+    private $comments;
 
     public function __construct()
     {
-        $this->products = new ArrayCollection();
+        $this->comments = new ArrayCollection();
     }
+
 
     /**
      * Get id.
@@ -98,7 +109,7 @@ class Image
      *
      * @param string $title
      *
-     * @return Image
+     * @return Video
      */
     public function setTitle($title)
     {
@@ -122,7 +133,7 @@ class Image
      *
      * @param string $description
      *
-     * @return Image
+     * @return Video
      */
     public function setDescription($description)
     {
@@ -146,7 +157,7 @@ class Image
      *
      * @param string $name
      *
-     * @return Image
+     * @return Video
      */
     public function setName($name)
     {
@@ -170,7 +181,7 @@ class Image
      *
      * @param string $path
      *
-     * @return Image
+     * @return Video
      */
     public function setPath($path)
     {
@@ -194,7 +205,7 @@ class Image
      *
      * @param string $status
      *
-     * @return Image
+     * @return Video
      */
     public function setStatus($status)
     {
@@ -218,7 +229,7 @@ class Image
      *
      * @param \DateTime $createdAt
      *
-     * @return Image
+     * @return Video
      */
     public function setCreatedAt($createdAt)
     {
@@ -242,7 +253,7 @@ class Image
      *
      * @param \DateTime $updatedAt
      *
-     * @return Image
+     * @return Video
      */
     public function setUpdatedAt($updatedAt)
     {
@@ -266,7 +277,7 @@ class Image
      *
      * @param \DateTime $deletedAt
      *
-     * @return Image
+     * @return Video
      */
     public function setDeletedAt($deletedAt)
     {
@@ -286,38 +297,62 @@ class Image
     }
 
     /**
-     * Add user.
+     * Set user.
      *
-     * @param \Lardon\BasicBundle\Entity\User $user
+     * @param \Lardon\BasicBundle\Entity\User|null $user
      *
-     * @return Image
+     * @return Video
      */
-    public function addUser(\Lardon\BasicBundle\Entity\User $user)
+    public function setUser(\Lardon\BasicBundle\Entity\User $user = null)
     {
-        $this->users[] = $user;
+        $this->user = $user;
 
         return $this;
     }
 
     /**
-     * Remove user.
+     * Get user.
      *
-     * @param \Lardon\BasicBundle\Entity\User $user
-     *
-     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     * @return \Lardon\BasicBundle\Entity\User|null
      */
-    public function removeUser(\Lardon\BasicBundle\Entity\User $user)
+    public function getUser()
     {
-        return $this->users->removeElement($user);
+        return $this->user;
     }
 
     /**
-     * Get users.
+     * Add comment.
+     *
+     * @param \Lardon\BasicBundle\Entity\Comment $comment
+     *
+     * @return Video
+     */
+    public function addComment(\Lardon\BasicBundle\Entity\Comment $comment)
+    {
+        $this->comments[] = $comment;
+
+        return $this;
+    }
+
+    /**
+     * Remove comment.
+     *
+     * @param \Lardon\BasicBundle\Entity\Comment $comment
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeComment(\Lardon\BasicBundle\Entity\Comment $comment)
+    {
+        return $this->comments->removeElement($comment);
+    }
+
+    /**
+     * Get comments.
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getUsers()
+    public function getComments()
     {
-        return $this->users;
+        return $this->comments;
     }
 }

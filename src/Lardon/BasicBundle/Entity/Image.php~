@@ -77,10 +77,6 @@ class Image
      */
     private $deletedAt;
 
-    /**
-     * @ORM\OneToMany(targetEntity="User", mappedBy="image")
-     */
-    private $users;
 
     public function __construct()
     {
@@ -287,5 +283,41 @@ class Image
     public function getDeletedAt()
     {
         return $this->deletedAt;
+    }
+
+    /**
+     * Add user.
+     *
+     * @param \Lardon\BasicBundle\Entity\User $user
+     *
+     * @return Image
+     */
+    public function addUser(\Lardon\BasicBundle\Entity\User $user)
+    {
+        $this->users[] = $user;
+
+        return $this;
+    }
+
+    /**
+     * Remove user.
+     *
+     * @param \Lardon\BasicBundle\Entity\User $user
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeUser(\Lardon\BasicBundle\Entity\User $user)
+    {
+        return $this->users->removeElement($user);
+    }
+
+    /**
+     * Get users.
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getUsers()
+    {
+        return $this->users;
     }
 }

@@ -12,6 +12,9 @@ class DefaultController extends Controller
      */
     public function indexAction()
     {
-        return $this->render('LardonBasicBundle:Default:index.html.twig');
+        return $this->render('LardonBasicBundle:Default:index.html.twig', [
+            'base_dir' => realpath($this->getParameter('kernel.project_dir')).DIRECTORY_SEPARATOR,
+            'toto' => 'toto'
+        ]);
     }
 }

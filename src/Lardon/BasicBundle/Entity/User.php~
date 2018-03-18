@@ -85,15 +85,20 @@ class User
     private $deletedAt;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Image", inversedBy="users")
-     * @ORM\JoinColumn(name="image_id", referencedColumnName="id")
+     * @ORM\OneToMany(targetEntity="Video", mappedBy="user")
      */
-    private $image;
+    private $videos;
 
     /**
      * @ORM\OneToMany(targetEntity="Comment", mappedBy="user")
      */
     private $comments;
+
+    /**
+     * @ORM\OneToOne(targetEntity="Image")
+     * @ORM\JoinColumn(name="image_id", referencedColumnName="id")
+     */
+    private $image;
 
     /**
      * Get id.
@@ -319,5 +324,48 @@ class User
     public function getDeletedAt()
     {
         return $this->deletedAt;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->comments = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add comment.
+     *
+     * @param \Lardon\BasicBundle\Entity\Comment $comment
+     *
+     * @return User
+     */
+    public function addComment(\Lardon\BasicBundle\Entity\Comment $comment)
+    {
+        $this->comments[] = $comment;
+
+        return $this;
+    }
+
+    /**
+     * Remove comment.
+     *
+     * @param \Lardon\BasicBundle\Entity\Comment $comment
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeComment(\Lardon\BasicBundle\Entity\Comment $comment)
+    {
+        return $this->comments->removeElement($comment);
+    }
+
+    /**
+     * Get comments.
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getComments()
+    {
+        return $this->comments;
     }
 }

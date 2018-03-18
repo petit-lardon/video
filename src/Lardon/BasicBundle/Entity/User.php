@@ -85,15 +85,20 @@ class User
     private $deletedAt;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Image", inversedBy="users")
-     * @ORM\JoinColumn(name="image_id", referencedColumnName="id")
+     * @ORM\OneToMany(targetEntity="Video", mappedBy="user")
      */
-    private $image;
+    private $videos;
 
     /**
      * @ORM\OneToMany(targetEntity="Comment", mappedBy="user")
      */
     private $comments;
+
+    /**
+     * @ORM\OneToOne(targetEntity="Image")
+     * @ORM\JoinColumn(name="image_id", referencedColumnName="id")
+     */
+    private $image;
 
     /**
      * Get id.
@@ -329,30 +334,6 @@ class User
     }
 
     /**
-     * Set image.
-     *
-     * @param \Lardon\BasicBundle\Entity\Image|null $image
-     *
-     * @return User
-     */
-    public function setImage(\Lardon\BasicBundle\Entity\Image $image = null)
-    {
-        $this->image = $image;
-
-        return $this;
-    }
-
-    /**
-     * Get image.
-     *
-     * @return \Lardon\BasicBundle\Entity\Image|null
-     */
-    public function getImage()
-    {
-        return $this->image;
-    }
-
-    /**
      * Add comment.
      *
      * @param \Lardon\BasicBundle\Entity\Comment $comment
@@ -386,5 +367,65 @@ class User
     public function getComments()
     {
         return $this->comments;
+    }
+
+    /**
+     * Add video.
+     *
+     * @param \Lardon\BasicBundle\Entity\Video $video
+     *
+     * @return User
+     */
+    public function addVideo(\Lardon\BasicBundle\Entity\Video $video)
+    {
+        $this->videos[] = $video;
+
+        return $this;
+    }
+
+    /**
+     * Remove video.
+     *
+     * @param \Lardon\BasicBundle\Entity\Video $video
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeVideo(\Lardon\BasicBundle\Entity\Video $video)
+    {
+        return $this->videos->removeElement($video);
+    }
+
+    /**
+     * Get videos.
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getVideos()
+    {
+        return $this->videos;
+    }
+
+    /**
+     * Set image.
+     *
+     * @param \Lardon\BasicBundle\Entity\Image|null $image
+     *
+     * @return User
+     */
+    public function setImage(\Lardon\BasicBundle\Entity\Image $image = null)
+    {
+        $this->image = $image;
+
+        return $this;
+    }
+
+    /**
+     * Get image.
+     *
+     * @return \Lardon\BasicBundle\Entity\Image|null
+     */
+    public function getImage()
+    {
+        return $this->image;
     }
 }

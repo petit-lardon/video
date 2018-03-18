@@ -36,6 +36,12 @@ class Comment
     private $status;
 
     /**
+     * @ORM\ManyToOne(targetEntity="Video", inversedBy="comments")
+     * @ORM\JoinColumn(name="video_id", referencedColumnName="id")
+     */
+    private $video;
+
+    /**
      * @ORM\ManyToOne(targetEntity="User", inversedBy="comments")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      */
@@ -121,5 +127,29 @@ class Comment
     public function getUser()
     {
         return $this->user;
+    }
+
+    /**
+     * Set video.
+     *
+     * @param \Lardon\BasicBundle\Entity\Video|null $video
+     *
+     * @return Comment
+     */
+    public function setVideo(\Lardon\BasicBundle\Entity\Video $video = null)
+    {
+        $this->video = $video;
+
+        return $this;
+    }
+
+    /**
+     * Get video.
+     *
+     * @return \Lardon\BasicBundle\Entity\Video|null
+     */
+    public function getVideo()
+    {
+        return $this->video;
     }
 }
